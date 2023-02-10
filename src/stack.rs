@@ -1,3 +1,5 @@
+//! Structure Pile
+
 pub struct Stack<T> {
     pub elements: Vec<T>,
 }
