@@ -5,6 +5,12 @@ use std::io::{BufRead, BufReader, Write};
 use std::process::exit;
 
 const EXIT: char = 'X';
+const START: char = 'Y';
+const MONSTER: char = 'M';
+const UP: char = '^';
+const DOWN: char = 'v';
+const RIGHT: char = '>';
+const LEFT: char = '<';
 
 struct Informations{
     condition:Vec<char>,
@@ -198,7 +204,7 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
     };
 
     let mut infos = Informations{
-        condition : Vec::from(['M', ' ', 'X', 'Y']),
+        condition : Vec::from(['M', ' ', EXIT, START]),
         y_max: 0,
         x_max: 0,
         endurance: 3,
@@ -233,7 +239,7 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
 
             //attribuer un chiffre à un charactère dans le tableau de sauvegarde
             match charact{
-                'Y' => {
+                START => {
                     dpt.x = abs;
                     dpt.y =  ord;
                     joueur.x = abs ;
@@ -241,10 +247,10 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
                     ligne_secondaire.push(2);
                     flag = 1;
                 },
-                'M'=> {
+                MONSTER => {
                     ligne_secondaire.push(4);
                 },
-                'X' => {
+                EXIT => {
                     ligne_secondaire.push(3);
                 },
                 ' '=> {
@@ -338,7 +344,7 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
         if is_up_reachable(&joueur, &tableau_complet, &tableau_save, &infos){
             //println!("haut");
             pile.push(Cell { x: joueur.x, y: joueur.y });
-            path.push('^');
+            path.push(UP);
             up(&mut joueur, &mut tableau_save);
             if !endurance_decr(&joueur, &tableau_complet, &mut infos){
                 println!("plus d'endurance");
@@ -352,7 +358,7 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
             if is_right_reachable(&joueur, &tableau_complet, &tableau_save, &infos){
                 //println!("droite");
                 pile.push(Cell { x: joueur.x, y: joueur.y });
-                path.push('>');
+                path.push(RIGHT);
                 right(&mut joueur, &mut tableau_save);
                 if !endurance_decr(&joueur, &tableau_complet, &mut infos){
                     println!("plus d'endurance");
@@ -366,7 +372,7 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
                 if is_down_reachable(&joueur, &tableau_complet, &tableau_save, &infos){
                     //println!("bas");
                     pile.push(Cell { x: joueur.x, y: joueur.y });
-                    path.push('v');
+                    path.push(DOWN);
                     down(&mut joueur, &mut tableau_save);
                     if !endurance_decr(&joueur, &tableau_complet, &mut infos){
                         println!("plus d'endurance");
@@ -380,7 +386,7 @@ fn start(monster_struct:MonstrousMazeInput) -> MonstrousMazeOutput{
                     if is_left_reachable(&joueur, &tableau_complet, &tableau_save, &infos){
                         //println!("gauche");
                         pile.push(Cell { x: joueur.x, y: joueur.y });
-                        path.push('<');
+                        path.push(LEFT);
                         left(&mut joueur, &mut tableau_save);
                         if !endurance_decr(&joueur, &tableau_complet, &mut infos){
                             println!("plus d'endurance");
